@@ -34,6 +34,30 @@
 
   <body>
     <div id="root"></div>
+    <script>
+      // Para Github Pages e domínio personalizado
+      (function() {
+        // Script de redirecionamento para SPA no GitHub Pages
+        var pathSegmentsToKeep = 0;
+        var isGithubPages = window.location.hostname === 'davidalvont.github.io';
+        
+        if (isGithubPages) {
+          pathSegmentsToKeep = 1; // Um segmento para 'emiliadelcarlos'
+        }
+
+        var l = window.location;
+        var basePath = isGithubPages ? '/emiliadelcarlos/' : '/';
+        
+        // Redireciona para a página inicial com os parâmetros corretos
+        l.replace(
+          l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+          basePath +
+          l.pathname.split('/').slice(pathSegmentsToKeep + 1).join('/') +
+          (l.search ? l.search : '') +
+          (l.hash ? l.hash : '')
+        );
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
