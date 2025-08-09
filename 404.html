@@ -30,6 +30,19 @@
     <meta name="geo.placename" content="Boa Vista" />
     <meta name="geo.position" content="-2.8235;-60.6753" />
     <meta name="ICBM" content="-2.8235, -60.6753" />
+    <script type="text/javascript">
+      // Solução de SPA para GitHub Pages
+      (function(l) {
+        if (l.search[1] === '/' ) {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&')
+          }).join('?');
+          window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location))
+    </script>
   </head>
 
   <body>
@@ -49,13 +62,17 @@
         var basePath = isGithubPages ? '/emiliadelcarlos/' : '/';
         
         // Redireciona para a página inicial com os parâmetros corretos
-        l.replace(
-          l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-          basePath +
-          l.pathname.split('/').slice(pathSegmentsToKeep + 1).join('/') +
-          (l.search ? l.search : '') +
-          (l.hash ? l.hash : '')
-        );
+        // Modificado para trabalhar com SPA no GitHub Pages
+        var segmentCount = pathSegmentsToKeep + 1;
+        var cleanPath = l.pathname.split('/').slice(segmentCount).join('/');
+        var cleanUrl = l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') + basePath;
+        
+        // Encode para manter compatibilidade com o GitHub Pages
+        var redirectUrl = cleanUrl + '?/' + cleanPath +
+          (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+          (l.hash || '');
+          
+        l.replace(redirectUrl);
       })();
     </script>
     <script type="module" src="/src/main.tsx"></script>
